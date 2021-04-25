@@ -118,12 +118,9 @@ def businessAndUser():
     createuserprof()
 
 if __name__ == '__main__':
-
+    top.geometry("500x300")
     tk.Label(top, text="WELCOME TO THE VACCINE PASSPORT SYSTEM").grid(row=0,column=0)
-    tk.Label(top, text="Are you a Medical Professional? ").grid(row=1,column=0)
-    yesDrbutton = tk.Button(top, text="Yes", command=createmedprof).grid(row=1,column=1)
-    tk.Button(top, text="No", command=createuserprof).grid(row=1, column=2)
-    tk.Label(top, text="Are you a Business? ").grid(row=2,column=0)
-    yesBusbutton = tk.Button(top, text="Yes", command=businessAndUser).grid(row=2,column=1)
-    tk.Button(top, text="No", command=createuserprof).grid(row=2, column=2)
+    tk.Button(top, text="Scan for entry", command=createuserprof, bg="Blue").grid(row=1,column=0,rowspan=2,columnspan=2, padx=1, pady=3)
+    yesDrbutton = tk.Button(top, text="Medical", command=createmedprof).grid(row=10,column=3)
+    yesBusbutton = tk.Button(top, text="Settings", command=businessAndUser).grid(row=10,column=4)
     top.mainloop()
