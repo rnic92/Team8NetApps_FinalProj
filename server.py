@@ -50,6 +50,7 @@ def Update():
         return "Success"
     return "Failure"
 
+"""
 @app.route('/Admin/<EntryType>', methods=['POST'])
 def Admin(EntryType):
     data = request.get_json(force=True)
@@ -66,6 +67,7 @@ def Admin(EntryType):
         collectionVaccinated.insert_one(postVaccinated)
         return "Success"
     return "Failure"
+"""
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8081, debug=True)
