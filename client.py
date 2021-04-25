@@ -11,6 +11,7 @@ usrnm = tk.StringVar()
 usrpw = tk.StringVar()
 patnm = tk.StringVar()
 patpw = tk.StringVar()
+newMaxCustomers = tk.StringVar()
 displayCustomers = tk.StringVar()
 totalCustomers = 0
 displayMaximum = tk.StringVar()
@@ -87,12 +88,13 @@ def createbusiness():
     tk.Button(window, text = "Decrement", command=lambda:subdecrease()).grid(row=8,column=0)
 
     tk.Label(window, text = "Adjust Maximum Number of Customers: ").grid(row=9,column=0)
-    tk.Entry(window, textvariable=displayMaximum).grid(row=10, column=0)
+    tk.Entry(window, textvariable=newMaxCustomers).grid(row=10, column=0)
     tk.Button(window, text="Submit", command=setmax).grid(row=10,column=1)
 
 def setmax():
     global maximumCustomers
-    maximumCustomers = displayMaximum.get()
+    maximumCustomers = newMaxCustomers.get()
+    displayMaximum.set(newMaxCustomers.get())
 
 def subreset():
     global totalCustomers
