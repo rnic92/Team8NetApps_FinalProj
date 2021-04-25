@@ -20,9 +20,10 @@ auth = HTTPBasicAuth()
 
 @auth.verify_password
 def verify_password(AuthUsername, AuthPassword):
-    DocVacInfo = collectionVaccinated.find({"Username":AuthUsername})
-    if AuthPassword == DocVacInfo.get("Password"):
-        return AuthUsername
+    DocVacInfo = collectionVaccinated.find_one({"Username":AuthUsername})
+    if DocVacInfo:
+        if AuthPassword == DocVacInfo.get("Password"):
+            return AuthUsername
     print("failed auth")
     return None
 
@@ -38,7 +39,8 @@ def Update():
     DrPass = data['pass']
     new_user = data['new_user']
     new_pass = data['new_pass']
-    DocDrInfo = collectionDr.find({"Username":DrUser})
+    DocDrInfo = collectionDr.find_one({"Username":DrUser})
+    print(type(DocDrInfo),DocDrInfo)
     if DrPass == DocDrInfo.get("Password"):
         ticks = time.time()
         TimeOfVaccination = str(ticks)
