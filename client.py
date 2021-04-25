@@ -67,7 +67,7 @@ def newuserprofile(window):
 def createbusiness():
     global totalCustomers, maximumCustomers
     window = tk.Toplevel()
-    window.geometry('500x300')
+    window.geometry('500x250')
     displayCustomers.set(str(totalCustomers))
     displayMaximum.set(str(maximumCustomers))
 
@@ -84,12 +84,13 @@ def createbusiness():
     tk.Label(window, text = "*only use for those who cannot get vaccinated*").grid(row=5,column=0)
     tk.Button(window, text = "Increment", command=lambda:subincrease()).grid(row=6,column=0)
 
-    tk.Label(window, text = "Manual Decrease Customer Counter").grid(row=7,column=0)
-    tk.Button(window, text = "Decrement", command=lambda:subdecrease()).grid(row=8,column=0)
+    tk.Label(window, text = "Manual Decrease Customer Counter").grid(row=4,column=1)
+    tk.Label(window, text="*track when people leave to update counter*").grid(row=5, column=1)
+    tk.Button(window, text = "Decrement", command=lambda:subdecrease()).grid(row=6,column=1)
 
-    tk.Label(window, text = "Adjust Maximum Number of Customers: ").grid(row=9,column=0)
-    tk.Entry(window, textvariable=newMaxCustomers).grid(row=10, column=0)
-    tk.Button(window, text="Submit", command=setmax).grid(row=10,column=1)
+    tk.Label(window, text = "Adjust Maximum Number of Customers: ").grid(row=7,column=0)
+    tk.Entry(window, textvariable=newMaxCustomers).grid(row=8, column=0)
+    tk.Button(window, text="Submit", command=setmax).grid(row=8,column=1)
 
 def setmax():
     global maximumCustomers
