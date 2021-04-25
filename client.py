@@ -32,7 +32,7 @@ def createmedprof():
     patname.pack()
     patpass.pack()
 
-    submitbutton = tk.Button(window, text = "Submit", command=subpatient)
+    submitbutton = tk.Button(window, text = "Submit", command=lambda:subpatient(window))
     submitbutton.pack()
 
 def createuserprof():
@@ -48,25 +48,28 @@ def createuserprof():
     username.pack()
     userpw.pack()
 
-    submitbutton = tk.Button(window, text = "Submit", command=subcheck)
+    submitbutton = tk.Button(window, text = "Submit", command=lambda:subcheck(window))
     submitbutton.pack()
 
 
-def subpatient():
+def subpatient(window):
     doctor = usrnm.get()
     doctor2 = sha256(usrpw.get().encode()).hexdigest()
     patient = patnm.get()
     patient2 = sha256(patpw.get().encode()).hexdigest()
     data = {"user":doctor, "pass":doctor2, "new_user":patient, "new_pass":patient2}
     print(data)
-    # requests.post("http://127.0.0.1:8081/Update", json=data)
+    #r = requests.post("http://127.0.0.1:8081/Update", json=data)
 
-def subcheck():
+def subcheck(window):
     patient = usrnm.get()
     patient2 = sha256(usrpw.get().encode()).hexdigest()
     print(patient, patient2)
-    # requests.get("http://127.0.0.1:8081/Check", auth=(patient, patient2))
-
+    r = requests.get("http://127.0.0.1:8081/Check", auth=(patient, patient2))
+    if r.text == "Success":
+        window.configure(bg="green")
+    else:
+        window.configure(bg="red")
 if __name__ == '__main__':
 
     tk.Label(top, text="WELCOME TO THE VACCINE PASSPORT SYSTEM").grid(row=0,column=0)
