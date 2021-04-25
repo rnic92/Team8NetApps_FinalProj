@@ -1,7 +1,7 @@
 import requests
 from hashlib import sha256
-typ = input("enter type [Doctor/Patient]")
-name = input("enter name")
+typ = input("enter type [Doctor/Patient]: ")
+name = input("enter name: ")
 psw = sha256(input("enter pw").encode()).hexdigest()
 
 data = {"user":name, "pass":psw}
