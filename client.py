@@ -14,6 +14,7 @@ patpw = tk.StringVar()
 displayCustomers = tk.StringVar()
 totalCustomers = 0
 displayMaximum = tk.StringVar()
+maximumCustomers = 0
 
 def createmedprof():
     window = tk.Toplevel()
@@ -53,11 +54,11 @@ def createuserprof():
     submitbutton.pack()
 
 def createbusiness():
-    global totalCustomers
+    global totalCustomers, maximumCustomers
     window = tk.Toplevel()
-    window.geometry('300x300')
+    window.geometry('500x300')
     displayCustomers.set(str(totalCustomers))
-    displayMaximum.set(str(totalCustomers))
+    displayMaximum.set(str(maximumCustomers))
 
     tk.Label(window, text = "Total Customers = ").grid(row=0,column=0)
     tk.Label(window, textvariable=displayCustomers).grid(row=1,column=0)
@@ -76,8 +77,12 @@ def createbusiness():
     tk.Button(window, text = "Decrement", command=lambda:subdecrease()).grid(row=8,column=0)
 
     tk.Label(window, text = "Adjust Maximum Number of Customers: ").grid(row=9,column=0)
-    tk.Entry(window, textvariable=displayMaximum)
-    maximumCustomers = int(displayMaximum.get())
+    tk.Entry(window, textvariable=displayMaximum).grid(row=10, column=0)
+    tk.Button(window, text="Submit", command=setmax).grid(row=10,column=1)
+
+def setmax():
+    global maximumCustomers
+    maximumCustomers = displayMaximum.get()
 
 def subreset():
     global totalCustomers
@@ -122,14 +127,13 @@ def subcheck(window):
     else:
         window.configure(bg="red")
 
-def businessAndUser():
-    createbusiness()
-    createuserprof()
 
 if __name__ == '__main__':
-    top.geometry("500x300")
-    tk.Label(top, text="WELCOME TO THE VACCINE PASSPORT SYSTEM").grid(row=0,column=0)
-    tk.Button(top, text="Scan for entry", command=createuserprof, bg="Blue").grid(row=1,column=0,rowspan=2,columnspan=2, padx=1, pady=3)
-    yesDrbutton = tk.Button(top, text="Medical", command=createmedprof).grid(row=10,column=3)
-    yesBusbutton = tk.Button(top, text="Settings", command=businessAndUser).grid(row=10,column=4)
+    top.geometry("400x200")
+    tk.Label(text="                   \n                  ").grid(row=5,column=1)
+    tk.Label(text="                   \n                  ").grid(row=6,column=1)
+    top.title("WELCOME TO THE VACCINE PASSPORT SYSTEM")
+    entrybutton = tk.Button(top, text="Scan for entry", command=createuserprof, bg="#54FA9B").grid(row=0,column=0)
+    yesDrbutton = tk.Button(top, text="Medical", command=createmedprof).grid(row=7,column=3)
+    yesBusbutton = tk.Button(top, text="Settings", command=createbusiness).grid(row=7,column=4)
     top.mainloop()
