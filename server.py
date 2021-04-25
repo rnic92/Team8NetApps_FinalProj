@@ -21,7 +21,7 @@ auth = HTTPBasicAuth()
 @auth.verify_password
 def verify_password(AuthUsername, AuthPassword):
     DocVacInfo = collectionVaccinated.find({"Username":AuthUsername})
-    if sha256(AuthPassword.encode()) == DocVacInfo.get("Password"):
+    if AuthPassword == DocVacInfo.get("Password"):
         return AuthUsername
     print("failed auth")
     return None
@@ -39,7 +39,7 @@ def Update():
     new_user = data['new_user']
     new_pass = data['new_pass']
     DocDrInfo = collectionDr.find({"Username":DrUser})
-    if sha256(DrPass.encode()) == DocDrInfo.get("Password"):
+    if DrPass == DocDrInfo.get("Password"):
         ticks = time.time()
         TimeOfVaccination = str(ticks)
         postVaccinated = {"Username": new_user, "Password": new_pass, "Time": TimeOfVaccination}
@@ -47,5 +47,22 @@ def Update():
         return "Success"
     return "Failure"
 
+@app.route('/Admin/<EntryType>', methods=['POST'])
+def Admin(EntryType):
+    data = request.get_json(force=True)
+    AdUser = data['user']
+    AdPass = data['pass']
+    if EntryType == "Doctor":
+        postDoctor = {"Username": AdUser, "Password": AdPass}
+        collectionDr.insert_one(postDoctor)
+        return "Success"
+    elif EntryType == "Patient":
+        ticks = time.time()
+        TimeOfVaccination = str(ticks)
+        postVaccinated = {"Username": AdUser, "Password": AdPass, "Time": TimeOfVaccination}
+        collectionVaccinated.insert_one(postVaccinated)
+        return "Success"
+    return "Failure"
+
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=8081)
+    app.run(host='127.0.0.1', port=8081, debug=True)
