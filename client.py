@@ -11,6 +11,8 @@ usrnm = tk.StringVar()
 usrpw = tk.StringVar()
 patnm = tk.StringVar()
 patpw = tk.StringVar()
+displayCustomers = tk.StringVar()
+totalCustomers = 0
 
 def createmedprof():
     window = tk.Toplevel()
@@ -51,6 +53,41 @@ def createuserprof():
     submitbutton = tk.Button(window, text = "Submit", command=lambda:subcheck(window))
     submitbutton.pack()
 
+def createbusiness():
+    global totalCustomers
+    window = tk.Toplevel()
+    window.geometry('300x300')
+    displayCustomers.set(str(totalCustomers))
+
+    tk.Label(window, text = "Total Customers = ").grid(row=0,column=0)
+    tk.Label(window, textvariable=displayCustomers).grid(row=1,column=0)
+
+    tk.Label(window, text = "Reset Customer Counter").grid(row=2,column=0)
+    tk.Button(window, text = "Reset", command=lambda:subreset()).grid(row=3,column=0)
+
+    tk.Label(window, text = "Manual Increase Customer Counter").grid(row=4,column=0)
+    tk.Label(window, text = "*only use for those who cannot get vaccinated*").grid(row=5,column=0)
+    tk.Button(window, text = "Increment", command=lambda:subincrease()).grid(row=6,column=0)
+
+    tk.Label(window, text = "Manual Decrease Customer Counter").grid(row=7,column=0)
+    tk.Button(window, text = "Decrement", command=lambda:subdecrease()).grid(row=8,column=0)
+
+def subreset():
+    global totalCustomers
+    totalCustomers = 0
+    displayCustomers.set(str(totalCustomers))
+
+def subincrease():
+    global totalCustomers
+    totalCustomers += 1
+    displayCustomers.set(str(totalCustomers))
+
+def subdecrease():
+    global totalCustomers
+    totalCustomers -= 1
+    if totalCustomers < 0:
+        totalCustomers = 1
+    displayCustomers.set(str(totalCustomers))
 
 def subpatient(window):
     doctor = usrnm.get()
@@ -66,18 +103,28 @@ def subpatient(window):
         window.configure(bg="red")
 
 def subcheck(window):
+    global totalCustomers
     patient = usrnm.get()
     patient2 = sha256(usrpw.get().encode()).hexdigest()
     print(patient, patient2)
     r = requests.get("http://127.0.0.1:8081/Check", auth=(patient, patient2))
     if r.text == "Success":
         window.configure(bg="green")
+        subincrease()
     else:
         window.configure(bg="red")
+
+def businessAndUser():
+    createbusiness()
+    createuserprof()
+
 if __name__ == '__main__':
 
     tk.Label(top, text="WELCOME TO THE VACCINE PASSPORT SYSTEM").grid(row=0,column=0)
-    tk.Label(top, text="Are You a Medical Professional? ").grid(row=1,column=0)
-    yesbutton = tk.Button(top, text="Yes", command=createmedprof).grid(row=1,column=1)
+    tk.Label(top, text="Are you a Medical Professional? ").grid(row=1,column=0)
+    yesDrbutton = tk.Button(top, text="Yes", command=createmedprof).grid(row=1,column=1)
     tk.Button(top, text="No", command=createuserprof).grid(row=1, column=2)
+    tk.Label(top, text="Are you a Business? ").grid(row=2,column=0)
+    yesBusbutton = tk.Button(top, text="Yes", command=businessAndUser).grid(row=2,column=1)
+    tk.Button(top, text="No", command=createuserprof).grid(row=2, column=2)
     top.mainloop()
