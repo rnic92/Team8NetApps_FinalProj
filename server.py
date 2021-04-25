@@ -9,11 +9,11 @@ from hashlib import sha256
 clusterDr = pymongo.MongoClient("mongodb+srv://joshs98:VirginiaTech98@cluster0.duako.mongodb.net/Doctors?retryWrites=true&w=majority")
 dbDr = clusterDr["Doctors"]
 collectionDr = dbDr["Doctors"]
-print("[Server 01] –Initialized Doctors MongoDB datastore")
+print("[Server 01] – Initialized Doctors MongoDB datastore")
 clusterVaccinated = pymongo.MongoClient("mongodb+srv://joshs98:VirginiaTech98@cluster0.duako.mongodb.net/Vaccinated?retryWrites=true&w=majority")
 dbVaccinated = clusterVaccinated["Vaccinated"]
 collectionVaccinated = dbVaccinated["Vaccinated"]
-print("[Server 02] –Initialized Vaccinated MongoDB datastore")
+print("[Server 02] – Initialized Vaccinated MongoDB datastore")
 
 app = Flask(__name__)
 auth = HTTPBasicAuth()
@@ -30,6 +30,7 @@ def verify_password(AuthUsername, AuthPassword):
 @app.route('/Check', methods=['GET'])
 @auth.login_required
 def Check():
+    print("[Server 03] – Varified Patient Information")
     return "Success"
 
 @app.route('/Update', methods=['POST'])
@@ -40,12 +41,12 @@ def Update():
     new_user = data['new_user']
     new_pass = data['new_pass']
     DocDrInfo = collectionDr.find_one({"Username":DrUser})
-    print(type(DocDrInfo),DocDrInfo)
     if DrPass == DocDrInfo.get("Password"):
         ticks = time.time()
         TimeOfVaccination = str(ticks)
         postVaccinated = {"Username": new_user, "Password": new_pass, "Time": TimeOfVaccination}
         collectionVaccinated.insert_one(postVaccinated)
+        print("[Server 04] – Doctor Added Patient Information")
         return "Success"
     return "Failure"
 
