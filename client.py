@@ -59,7 +59,11 @@ def subpatient(window):
     patient2 = sha256(patpw.get().encode()).hexdigest()
     data = {"user":doctor, "pass":doctor2, "new_user":patient, "new_pass":patient2}
     print(data)
-    #r = requests.post("http://127.0.0.1:8081/Update", json=data)
+    r = requests.post("http://127.0.0.1:8081/Update", json=data)
+    if r.text == "Success":
+        window.configure(bg="green")
+    else:
+        window.configure(bg="red")
 
 def subcheck(window):
     patient = usrnm.get()
