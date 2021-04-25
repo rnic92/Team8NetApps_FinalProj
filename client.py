@@ -49,9 +49,19 @@ def createuserprof():
     userpw = tk.Entry(window, textvariable=usrpw, show="*")
     userentry.pack()
     userpw.pack()
-
+    newscan = tk.Button(window, text="New Scan", command=lambda:newuserprofile(window))
     submitbutton = tk.Button(window, text = "Submit", command=lambda:subcheck(window))
     submitbutton.pack()
+    newscan.pack()
+
+
+def newuserprofile(window):
+    window.destroy()
+    usrnm.set("")
+    usrpw.set("")
+    patnm.set("")
+    patpw.set("")
+    createuserprof()
 
 def createbusiness():
     global totalCustomers, maximumCustomers
