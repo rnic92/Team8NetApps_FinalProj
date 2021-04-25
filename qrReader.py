@@ -12,6 +12,7 @@ def generate_qr(name):
 def read_qr():
     cap = cv2.VideoCapture(0)
     detector = cv2.QRCodeDetector()
+    print("[Client 03] – Waiting to scan Username QR Code")
     while True:
         ret,frame = cap.read()
         data, bbox, straight_qrcode = detector.detectAndDecode(frame)
