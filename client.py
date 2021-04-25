@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+from qrReader import *
 import tkinter as tk
 import requests
 from flask_httpauth import HTTPBasicAuth
@@ -43,11 +43,9 @@ def createuserprof():
     newlabel = tk.Label(window, text = "Verifying Status")
     newlabel.pack()
 
-    userentry = tk.Label(window, text = "Enter your username/password")
-    username = tk.Entry(window, textvariable=usrnm)
+    userentry = tk.Label(window, text = "Enter your password")
     userpw = tk.Entry(window, textvariable=usrpw, show="*")
     userentry.pack()
-    username.pack()
     userpw.pack()
 
     submitbutton = tk.Button(window, text = "Submit", command=lambda:subcheck(window))
@@ -94,6 +92,7 @@ def subpatient(window):
     doctor2 = sha256(usrpw.get().encode()).hexdigest()
     patient = patnm.get()
     patient2 = sha256(patpw.get().encode()).hexdigest()
+    patient = generate_qr(patient)
     data = {"user":doctor, "pass":doctor2, "new_user":patient, "new_pass":patient2}
     print(data)
     r = requests.post("http://127.0.0.1:8081/Update", json=data)
@@ -104,7 +103,7 @@ def subpatient(window):
 
 def subcheck(window):
     global totalCustomers
-    patient = usrnm.get()
+    patient = read_qr()
     patient2 = sha256(usrpw.get().encode()).hexdigest()
     print(patient, patient2)
     r = requests.get("http://127.0.0.1:8081/Check", auth=(patient, patient2))

@@ -7,13 +7,13 @@ def generate_qr(name):
     filename = "testfile.png"
     img = qrcode.make(randtag)
     img.save(filename)
+    return randtag
 
 def read_qr():
     cap = cv2.VideoCapture(0)
     detector = cv2.QRCodeDetector()
     while True:
         ret,frame = cap.read()
-        cv2.imshow('frame', frame)
         data, bbox, straight_qrcode = detector.detectAndDecode(frame)
         if straight_qrcode is not None:
             return data
