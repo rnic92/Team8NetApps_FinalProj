@@ -13,6 +13,7 @@ patnm = tk.StringVar()
 patpw = tk.StringVar()
 displayCustomers = tk.StringVar()
 totalCustomers = 0
+displayMaximum = tk.StringVar()
 
 def createmedprof():
     window = tk.Toplevel()
@@ -56,9 +57,13 @@ def createbusiness():
     window = tk.Toplevel()
     window.geometry('300x300')
     displayCustomers.set(str(totalCustomers))
+    displayMaximum.set(str(totalCustomers))
 
     tk.Label(window, text = "Total Customers = ").grid(row=0,column=0)
     tk.Label(window, textvariable=displayCustomers).grid(row=1,column=0)
+
+    tk.Label(window, text = "Maximum Allowable Customers = ").grid(row=0,column=1)
+    tk.Label(window, textvariable=displayMaximum).grid(row=1,column=1)
 
     tk.Label(window, text = "Reset Customer Counter").grid(row=2,column=0)
     tk.Button(window, text = "Reset", command=lambda:subreset()).grid(row=3,column=0)
@@ -69,6 +74,10 @@ def createbusiness():
 
     tk.Label(window, text = "Manual Decrease Customer Counter").grid(row=7,column=0)
     tk.Button(window, text = "Decrement", command=lambda:subdecrease()).grid(row=8,column=0)
+
+    tk.Label(window, text = "Adjust Maximum Number of Customers: ").grid(row=9,column=0)
+    tk.Entry(window, textvariable=displayMaximum)
+    maximumCustomers = int(displayMaximum.get())
 
 def subreset():
     global totalCustomers
@@ -84,7 +93,7 @@ def subdecrease():
     global totalCustomers
     totalCustomers -= 1
     if totalCustomers < 0:
-        totalCustomers = 1
+        totalCustomers = 0
     displayCustomers.set(str(totalCustomers))
 
 def subpatient(window):
