@@ -93,7 +93,7 @@ def createbusiness():
 
 def setmax():
     global maximumCustomers
-    maximumCustomers = newMaxCustomers.get()
+    maximumCustomers = int(newMaxCustomers.get())
     displayMaximum.set(newMaxCustomers.get())
 
 def subreset():
@@ -128,14 +128,18 @@ def subpatient(window):
         window.configure(bg="red")
 
 def subcheck(window):
-    global totalCustomers
+    global totalCustomers, maximumCustomers
     patient = read_qr()
     patient2 = sha256(usrpw.get().encode()).hexdigest()
     print(patient, patient2)
     r = requests.get("http://127.0.0.1:8081/Check", auth=(patient, patient2))
-    if r.text == "Success":
+    if r.text == "Success" and totalCustomers < maximumCustomers:
         window.configure(bg="green")
         subincrease()
+    elif r.text == "Success" and totalCustomers >= maximumCustomers:
+        window.configure(bg="yellow")
+        warningLabel = tk.Label(window,text="WARNING: MAXIMUM CAPACITY")
+        warningLabel.pack()
     else:
         window.configure(bg="red")
 
