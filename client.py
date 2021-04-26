@@ -4,6 +4,7 @@ import tkinter as tk
 import requests
 from flask_httpauth import HTTPBasicAuth
 from hashlib import sha256
+import sys
 
 auth = HTTPBasicAuth()
 top = tk.Tk()
@@ -16,6 +17,10 @@ displayCustomers = tk.StringVar()
 totalCustomers = 0
 displayMaximum = tk.StringVar()
 maximumCustomers = 0
+if len(sys.argv) < 2:
+    URL = "127.0.0.1"
+else:
+    URL = sys.argv[1]
 
 def createmedprof():
     window = tk.Toplevel()
@@ -114,6 +119,7 @@ def subdecrease():
     displayCustomers.set(str(totalCustomers))
 
 def subpatient(window):
+
     doctor = usrnm.get()
     doctor2 = sha256(usrpw.get().encode()).hexdigest()
     patient = patnm.get()
@@ -121,7 +127,7 @@ def subpatient(window):
     patient = generate_qr(patient)
     data = {"user":doctor, "pass":doctor2, "new_user":patient, "new_pass":patient2}
     print(data)
-    r = requests.post("http://127.0.0.1:8081/Update", json=data)
+    r = requests.post("http://" + URL + ":8081/Update", json=data)
     if r.text == "Success":
         window.configure(bg="green")
     else:
@@ -132,7 +138,7 @@ def subcheck(window):
     patient = read_qr()
     patient2 = sha256(usrpw.get().encode()).hexdigest()
     print(patient, patient2)
-    r = requests.get("http://127.0.0.1:8081/Check", auth=(patient, patient2))
+    r = requests.get("http://" + URL + "/Check", auth=(patient, patient2))
     if r.text == "Success" and totalCustomers < maximumCustomers:
         window.configure(bg="green")
         subincrease()
@@ -145,6 +151,7 @@ def subcheck(window):
 
 
 if __name__ == '__main__':
+    print(URL)
     top.geometry("400x200")
     tk.Label(text="                   \n                  ").grid(row=5,column=1)
     tk.Label(text="                   \n                  ").grid(row=6,column=1)
