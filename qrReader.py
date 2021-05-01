@@ -3,9 +3,8 @@ import cv2
 import time
 
 def generate_qr(name):
-    randtag = str(time.time()) + name
     filename = "testfile.png"
-    img = qrcode.make(randtag)
+    img = qrcode.make(name)
     img.save(filename)
     return randtag
 

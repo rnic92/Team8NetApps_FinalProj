@@ -16,6 +16,8 @@ newMaxCustomers = tk.StringVar()
 displayCustomers = tk.StringVar()
 totalCustomers = 0
 displayMaximum = tk.StringVar()
+bids = tk.StringVar()
+bid = ''
 maximumCustomers = 0
 if len(sys.argv) < 2:
     URL = "127.0.0.1"
@@ -70,12 +72,11 @@ def newuserprofile(window):
     createuserprof()
 
 def createbusiness():
-    global totalCustomers, maximumCustomers
+    global totalCustomers, maximumCustomers, bid
     window = tk.Toplevel()
     window.geometry('500x250')
     displayCustomers.set(str(totalCustomers))
     displayMaximum.set(str(maximumCustomers))
-
     tk.Label(window, text = "Total Customers = ").grid(row=0,column=0)
     tk.Label(window, textvariable=displayCustomers).grid(row=1,column=0)
 
@@ -97,6 +98,14 @@ def createbusiness():
     tk.Entry(window, textvariable=newMaxCustomers).grid(row=8, column=0)
     tk.Button(window, text="Submit", command=setmax).grid(row=8,column=1)
 
+    tk.Label(window, text="BID: {}".format(bid)).grid(row=9, column=0)
+    tk.Entry(window, textvariable=bids).grid(row=9,column=1)
+    tk.Button(window, text="Submit", command=setbid).grid(row=9,column=2)
+    tk.Label(window, )
+
+def setbid():
+    global bid
+    bid = bids.get()
 def setmax():
     global maximumCustomers
     maximumCustomers = int(newMaxCustomers.get())
@@ -123,11 +132,10 @@ def subpatient(window):
 
     doctor = usrnm.get()
     doctor2 = sha256(usrpw.get().encode()).hexdigest()
-    patient = patnm.get()
+    patient = sha256(patnm.get().encode()).hexdigest()
     patient2 = sha256(patpw.get().encode()).hexdigest()
     patient = generate_qr(patient)
     data = {"user":doctor, "pass":doctor2, "new_user":patient, "new_pass":patient2}
-    print(data)
     r = requests.post("http://" + URL + ":8081/Update", json=data)
     if r.text == "Success":
         window.configure(bg="green")
@@ -138,9 +146,11 @@ def subcheck(window):
     global totalCustomers, maximumCustomers
     patient = read_qr()
     patient2 = sha256(usrpw.get().encode()).hexdigest()
-    print(patient, patient2)
+    data = {"user": patient, "BID": bid}
+    print(data)
     r = requests.get("http://" + URL + "/Check", auth=(patient, patient2))
     if r.text == "Success" and totalCustomers < maximumCustomers:
+        # nr = requests.post("http://" + URL + "/HistoryPost", auth=(patient, patient2), json=data)
         window.configure(bg="green")
         subincrease()
     elif r.text == "Success" and totalCustomers >= maximumCustomers:
