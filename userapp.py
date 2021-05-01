@@ -44,7 +44,7 @@ def qrget():
     displayqr()
 def hisget():
     global patient, patient2
-    r = requests.get("http://" + URL + "/HistoryGet/NULL/{}".format(patient), auth=(patient, patient2)) #<business>/<user>
+    r = requests.get("http://" + URL + "/HistoryGet/{}".format(patient), auth=(patient, patient2)) #<business>/<user>
     print(r.text)
 
 def displayqr():
