@@ -61,8 +61,8 @@ def HistoryGet(BID,user):
     else:
         return "Error: Not enough information given"
     print("[Server 07] – Business History Accessed Information:")
-    for i in BusinessUserInfo:
-        return(dict(i))
+    for doc in BusinessUserInfo:
+        doc["_id"] = str(doc["_id"])
     print(BusinessUserInfo)
     return BusinessUserInfo
 
