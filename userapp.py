@@ -39,11 +39,13 @@ def createuserwindow():
 
 def qrget():
     global patient, patient2
-    r = requests.get("http://" + URL + "/QRget/{}".format(patient), auth=(patient, patient2))
+    r = requests.get("http://" + URL + "/QRGet/{}".format(patient), auth=(patient, patient2))
+    print(r.text)
     generate_qr(r.text)
     displayqr()
 def hisget():
     global patient, patient2
+    print(patient)
     r = requests.get("http://" + URL + "/HistoryGet/NULL/{}".format(patient), auth=(patient, patient2)) #<business>/<user>
     print(r.text)
 
