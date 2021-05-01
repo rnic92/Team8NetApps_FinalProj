@@ -63,6 +63,7 @@ def HistoryGet(BID,user):
     print("[Server 07] – Business History Accessed Information:")
     for doc in BusinessUserInfo:
         doc["_id"] = str(doc["_id"])
+        print(doc)
     print(BusinessUserInfo)
     return BusinessUserInfo
 
