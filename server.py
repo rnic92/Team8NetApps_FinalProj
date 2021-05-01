@@ -47,6 +47,7 @@ def HistoryPost():
     postBusiness = {"BID": BID, "User": user,  "Time": timeEntered}
     collectionBusiness.insert_one(postBusiness)
     print("[Server 06] – Business Added Access Information")
+    return "Success"
 
 @app.route('/HistoryGet/<BID>/<user>', methods=['GET'])
 @auth.login_required
