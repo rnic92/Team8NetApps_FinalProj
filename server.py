@@ -60,13 +60,12 @@ def HistoryGet(BID,user):
         BusinessUserInfo = collectionBusiness.find({"BID": BID},{"User": user})
     else:
         return "Error: Not enough information given"
-    print("[Server 07] – Business History Accessed Information:")
+    print("[Server 07] – Business History Accessed Information")
     retdict = {}
     now = 0
     for doc in BusinessUserInfo:
-        retdict[str(now)] = doc["User"] + " " + doc["BID"] + " " + doc["Time"]
+        retdict[str(now)] = doc["BID"] + " " + doc["Time"]
         now += 1
-    print(retdict)
     return retdict
 
 @app.route('/QRGet/<user>', methods=['GET'])
@@ -77,7 +76,6 @@ def QRGet(user):
 
 @app.route('/Update', methods=['POST'])
 def Update():
-    print("Made it here")
     data = request.get_json(force=True)
     DrUser = data['user']
     DrPass = data['pass']
