@@ -136,7 +136,6 @@ def subpatient(window):
     patient2 = sha256(patpw.get().encode()).hexdigest()
     patient = generate_qr(patient)
     data = {"user":doctor, "pass":doctor2, "new_user":patient, "new_pass":patient2}
-    print(data)
     r = requests.post("http://" + URL + "/Update", json=data)
     if r.text == "Success":
         window.configure(bg="green")
@@ -148,7 +147,6 @@ def subcheck(window):
     patient = read_qr()
     patient2 = sha256(usrpw.get().encode()).hexdigest()
     data = {"user": patient, "BID": bid}
-    print(data)
     r = requests.get("http://" + URL + "/Check", auth=(patient, patient2))
     if r.text == "Success" and totalCustomers < maximumCustomers:
         nr = requests.post("http://" + URL + "/HistoryPost", auth=(patient, patient2), json=data)
@@ -163,7 +161,6 @@ def subcheck(window):
 
 
 if __name__ == '__main__':
-    print(URL)
     top.geometry("400x200")
     tk.Label(text="                   \n                  ").grid(row=5,column=1)
     tk.Label(text="                   \n                  ").grid(row=6,column=1)

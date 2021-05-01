@@ -40,13 +40,11 @@ def createuserwindow():
 def qrget():
     global patient, patient2
     r = requests.get("http://" + URL + "/QRGet/{}".format(patient), auth=(patient, patient2))
-    print(r.text)
     generate_qr(r.text)
     displayqr()
 def hisget():
     global patient, patient2
-    print(patient)
-    r = requests.get("http://" + URL + "/HistoryGet/NULL/{}".format(patient), auth=(patient, patient2)) #<business>/<user>
+    r = requests.get("http://" + URL + "/HistoryGet/{}".format(patient), auth=(patient, patient2)) #<business>/<user>
     print(r.text)
 
 def displayqr():
@@ -55,13 +53,12 @@ def displayqr():
 
 
 if __name__ == '__main__':
-    print(URL)
     top.geometry("400x200")
     top.title("WELCOME TO THE VACCINE PASSPORT SYSTEM")
     userLabel = tk.Label(top,text="Enter your Username ").grid(row=1,column=0)
     userEntry = tk.Entry(top, textvariable=usnm).grid(row=1,column=1)
     pwLabel = tk.Label(top,text="Enter your Username ").grid(row=2,column=0)
-    pwEntry = tk.Entry(top, textvariable=pw).grid(row=2,column=1)
+    pwEntry = tk.Entry(top, textvariable=pw, show="*").grid(row=2,column=1)
     subButton = tk.Button(top, text="Submit",command=EntryCheck).grid(row=3,column=1)
 
     top.mainloop()
