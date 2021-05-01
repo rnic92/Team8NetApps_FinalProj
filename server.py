@@ -46,20 +46,22 @@ def HistoryPost():
     timeEntered = time.ctime(time.time())
     postBusiness = {"BID": BID, "User": user,  "Time": timeEntered}
     collectionBusiness.insert_one(postBusiness)
-    #print("[Server 06] – Business Added Access Information")
+    print("[Server 06] – Business Added Access Information")
     return "Success"
 
 @app.route('/HistoryGet/<BID>/<user>', methods=['GET'])
 @auth.login_required
 def HistoryGet(BID,user):
     if user == 'NULL' and BID != 'NULL':
-        BusinessUserInfo = collectionBusiness.find({"User": user})
+        BusinessUserInfo = dict(collectionBusiness.find({"User": user}))
     elif user != 'NULL' and BID == 'NULL':
-        BusinessUserInfo = collectionBusiness.find({"BID": BID})
+        BusinessUserInfo = dict(collectionBusiness.find({"BID": BID}))
     elif user != 'NULL' and BID != 'NULL':
-        BusinessUserInfo = collectionBusiness.find({"BID": BID},{"User": user})
+        BusinessUserInfo = dict(collectionBusiness.find({"BID": BID},{"User": user}))
     else:
         return "Error: Not enough information given"
+    print("[Server 07] – Business History Accessed Information:")
+    print(BusinessUserInfo)
     return BusinessUserInfo
 
 @app.route('/QRGet/<user>', methods=['GET'])
@@ -69,6 +71,7 @@ def QRGet(user):
 
 @app.route('/Update', methods=['POST'])
 def Update():
+    print("Made it here")
     data = request.get_json(force=True)
     DrUser = data['user']
     DrPass = data['pass']
@@ -104,4 +107,4 @@ def Admin(EntryType):
 """
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=8081, debug=True)
+    app.run(host='0.0.0.0', port=8081, debug=True)
