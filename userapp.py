@@ -5,7 +5,10 @@ import requests
 from flask_httpauth import HTTPBasicAuth
 from hashlib import sha256
 import sys
+from PIL import Image
 
+patient = ''
+patient2 = ''
 auth = HTTPBasicAuth()
 top = tk.Tk()
 usnm = tk.StringVar()
@@ -17,33 +20,37 @@ else:
 
 
 def EntryCheck():
+    global patient, patient2
     patient = sha256(usnm.get().encode()).hexdigest()
     patient2 = sha256(pw.get().encode()).hexdigest()
-    r = requests.get("http://" + URL + "/Check")
+    r = requests.get("http://" + URL + "/Check", auth=(patient,patient2))
     if r.text == "Success":
         createuserwindow()
 
-def createuserprof():
+def createuserwindow():
     window = tk.Toplevel()
     window.geometry('300x300')
-    newlabel = tk.Label(window, text = "Verifying Status")
+    newlabel = tk.Label(window, text = "Welcome!")
     newlabel.pack()
-
-    userentry = tk.Label(window, text = "Enter your password")
-    userpw = tk.Entry(window, textvariable=usrpw, show="*")
-    userentry.pack()
-    userpw.pack()
-    newscan = tk.Button(window, text="New Scan", command=lambda:newuserprofile(window))
-    submitbutton = tk.Button(window, text = "Submit", command=lambda:subcheck(window))
-    submitbutton.pack()
-    newscan.pack()
+    qrcode = tk.Button(window, text="Generate QR", command=qrget)
+    history = tk.Button(window, text = "Get History", command=hisget)
+    qrcode.pack()
+    history.pack()
 
 def qrget():
-    r = requests.get("http://" + URL + "/QRget/{}".format(username))
+    global patient, patient2
+    r = requests.get("http://" + URL + "/QRget/{}".format(patient), auth=(patient, patient2))
     generate_qr(r.text)
+    displayqr()
 def hisget():
-    r = requests.get("http://" + URL + "/HistoryGet/NULL/{}".format(username)) #<business>/<user>
-    print(r.json)
+    global patient, patient2
+    r = requests.get("http://" + URL + "/HistoryGet/NULL/{}".format(patient), auth=(patient, patient2)) #<business>/<user>
+    print(r.text)
+
+def displayqr():
+    im = Image.open("testfile.png")
+    im.show()
+
 
 if __name__ == '__main__':
     print(URL)

@@ -6,7 +6,7 @@ def generate_qr(name):
     filename = "testfile.png"
     img = qrcode.make(name)
     img.save(filename)
-    return randtag
+    return name
 
 def read_qr():
     cap = cv2.VideoCapture(0)

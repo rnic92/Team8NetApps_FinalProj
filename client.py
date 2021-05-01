@@ -136,7 +136,8 @@ def subpatient(window):
     patient2 = sha256(patpw.get().encode()).hexdigest()
     patient = generate_qr(patient)
     data = {"user":doctor, "pass":doctor2, "new_user":patient, "new_pass":patient2}
-    r = requests.post("http://" + URL + ":8081/Update", json=data)
+    print(data)
+    r = requests.post("http://" + URL + "/Update", json=data)
     if r.text == "Success":
         window.configure(bg="green")
     else:
