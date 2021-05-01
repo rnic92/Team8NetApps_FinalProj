@@ -17,10 +17,10 @@ displayCustomers = tk.StringVar()
 totalCustomers = 0
 displayMaximum = tk.StringVar()
 bids = tk.StringVar()
-bid = ''
-maximumCustomers = 0
+bid = 'Hokie House'
+maximumCustomers = 100
 if len(sys.argv) < 2:
-    URL = "127.0.0.1"
+    URL = "127.0.0.1:8081"
 else:
     URL = sys.argv[1]
 
@@ -151,7 +151,7 @@ def subcheck(window):
     print(data)
     r = requests.get("http://" + URL + "/Check", auth=(patient, patient2))
     if r.text == "Success" and totalCustomers < maximumCustomers:
-        # nr = requests.post("http://" + URL + "/HistoryPost", auth=(patient, patient2), json=data)
+        nr = requests.post("http://" + URL + "/HistoryPost", auth=(patient, patient2), json=data)
         window.configure(bg="green")
         subincrease()
     elif r.text == "Success" and totalCustomers >= maximumCustomers:
