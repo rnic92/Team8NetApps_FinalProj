@@ -14,6 +14,10 @@ clusterVaccinated = pymongo.MongoClient("mongodb+srv://joshs98:VirginiaTech98@cl
 dbVaccinated = clusterVaccinated["Vaccinated"]
 collectionVaccinated = dbVaccinated["Vaccinated"]
 print("[Server 02] – Initialized Vaccinated MongoDB datastore")
+clusterBusiness = pymongo.MongoClient("mongodb+srv://joshs98:VirginiaTech98@cluster0.duako.mongodb.net/Business?retryWrites=true&w=majority")
+dbBusiness = clusterBusiness["Business"]
+collectionBusiness = dbBusiness["Business"]
+print("[Server 03] – Initialized Business MongoDB datastore")
 
 app = Flask(__name__)
 auth = HTTPBasicAuth()
@@ -30,8 +34,37 @@ def verify_password(AuthUsername, AuthPassword):
 @app.route('/Check', methods=['GET'])
 @auth.login_required
 def Check():
-    print("[Server 03] – Varified Patient Information")
+    print("[Server 04] – Varified Patient Information")
     return "Success"
+
+@app.route('/HistoryPost', methods=['POST'])
+@auth.login_required
+def HistoryPost():
+    data = request.get_json(force=True)
+    BID = data['BID']
+    user = data['user']
+    timeEntered = time.ctime(time.time())
+    postBusiness = {"BID": BID, "User": user,  "Time": timeEntered}
+    collectionBusiness.insert_one(postBusiness)
+    print("[Server 06] – Business Added Access Information")
+
+@app.route('/HistoryGet/<BID>/<user>', methods=['GET'])
+@auth.login_required
+def HistoryGet(BID,user):
+    if user == 'NULL' and BID != 'NULL':
+        BusinessUserInfo = collectionBusiness.find({"User": user})
+    elif user != 'NULL' and BID == 'NULL':
+        BusinessUserInfo = collectionBusiness.find({"BID": BID})
+    elif user != 'NULL' and BID != 'NULL':
+        BusinessUserInfo = collectionBusiness.find({"BID": BID},{"User": user})
+    else:
+        return "Error: Not enough information given"
+    return BusinessUserInfo
+
+@app.route('/QRGet/<user>', methods=['GET'])
+@auth.login_required
+def QRGet(user):
+    return user
 
 @app.route('/Update', methods=['POST'])
 def Update():
@@ -46,7 +79,7 @@ def Update():
         TimeOfVaccination = str(ticks)
         postVaccinated = {"Username": new_user, "Password": new_pass, "Time": TimeOfVaccination}
         collectionVaccinated.insert_one(postVaccinated)
-        print("[Server 04] – Doctor Added Patient Information")
+        print("[Server 05] – Doctor Added Patient Information")
         return "Success"
     return "Failure"
 
