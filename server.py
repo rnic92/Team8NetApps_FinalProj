@@ -49,15 +49,11 @@ def HistoryPost():
     print("[Server 06] – Business Added Access Information")
     return "Success"
 
-@app.route('/HistoryGet/<BID>/<user>', methods=['GET'])
+@app.route('/HistoryGet/<user>', methods=['GET'])
 @auth.login_required
-def HistoryGet(BID,user):
-    if user != 'NULL' and BID == 'NULL':
+def HistoryGet(user):
+    if user != 'NULL':
         BusinessUserInfo = collectionBusiness.find({"User": user})
-    elif user == 'NULL' and BID != 'NULL':
-        BusinessUserInfo = collectionBusiness.find({"BID": BID})
-    elif user != 'NULL' and BID != 'NULL':
-        BusinessUserInfo = collectionBusiness.find({"BID": BID},{"User": user})
     else:
         return "Error: Not enough information given"
     print("[Server 07] – Business History Accessed Information")
@@ -71,7 +67,7 @@ def HistoryGet(BID,user):
 @app.route('/QRGet/<user>', methods=['GET'])
 @auth.login_required
 def QRGet(user):
-    print("[Server 08] – QRCode Sent:")
+    print("[Server 08] – QRCode Sent")
     return user
 
 @app.route('/Update', methods=['POST'])
