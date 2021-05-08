@@ -1,7 +1,12 @@
 import qrcode
 import cv2
 import time
+"""
+Idea on how to generate and read QR codes inspired from
+https://www.thepythoncode.com/article/generate-read-qr-code-python
 
+Appreciation to Abdou Rockikz
+"""
 def generate_qr(name):
     filename = "testfile.png"
     img = qrcode.make(name)

@@ -25,6 +25,9 @@ else:
     URL = sys.argv[1]
 
 def createmedprof():
+    """
+    Create the window for medical professionals
+    """
     window = tk.Toplevel()
     window.geometry('300x300')
     newlabel = tk.Label(window, text = "Adding New User")
@@ -48,6 +51,9 @@ def createmedprof():
     submitbutton.pack()
 
 def createuserprof():
+    """
+    create the window for scanning in users.  Waits for QR read on submit
+    """
     window = tk.Toplevel()
     window.geometry('300x300')
     newlabel = tk.Label(window, text = "Verifying Status")
@@ -64,6 +70,9 @@ def createuserprof():
 
 
 def newuserprofile(window):
+    """
+    New scan.  delete all old data and generate new window
+    """
     window.destroy()
     usrnm.set("")
     usrpw.set("")
